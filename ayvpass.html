@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AyvPass</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0a0a0a;
+      color: #00ff00;
+      font-family: 'Roboto Mono', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      background-color: #111;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #00ff00;
+      text-shadow: 0 0 10px #00ff00;
+    }
+
+    .password-display {
+      background-color: #222;
+      color: #00ff00;
+      padding: 1rem;
+      font-size: 1.2rem;
+      border: 2px solid #00ff00;
+      border-radius: 5px;
+      margin-bottom: 1.5rem;
+      word-wrap: break-word;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .password-display:hover {
+      background-color: #333;
+    }
+
+    .options {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .options label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .options input[type="number"] {
+      width: 60px;
+      padding: 0.3rem;
+      background-color: #222;
+      color: #00ff00;
+      border: 1px solid #00ff00;
+      border-radius: 3px;
+    }
+
+    .generate-btn {
+      background-color: #00ff00;
+      color: #111;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      font-family: 'Orbitron', sans-serif;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .generate-btn:hover {
+      background-color: #00cc00;
+      transform: scale(1.05);
+    }
+
+    .generate-btn:active {
+      transform: scale(0.95);
+    }
+
+    .footer {
+      margin-top: 1.5rem;
+      font-size: 0.8rem;
+      color: #666;
+    }
+
+    .footer a {
+      color: #00ff00;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>HackPass</h1>
+    <div class="password-display" id="passwordDisplay">Click Generate</div>
+    <div class="options">
+      <label for="passwordLength">Password Length: <input type="number" id="passwordLength" value="12" min="6" max="50"></label>
+      <label><input type="checkbox" id="includeUppercase" checked> Include Uppercase</label>
+      <label><input type="checkbox" id="includeNumbers" checked> Include Numbers</label>
+      <label><input type="checkbox" id="includeSymbols" checked> Include Symbols</label>
+    </div>
+    <button class="generate-btn" id="generateBtn">Generate Password</button>
+    <div class="footer">
+      made by <a href="#" target="_blank">ayvx</a>
+    </div>
+  </div>
+
+  <script>
+    const passwordDisplay = document.getElementById('passwordDisplay');
+    const passwordLength = document.getElementById('passwordLength');
+    const includeUppercase = document.getElementById('includeUppercase');
+    const includeNumbers = document.getElementById('includeNumbers');
+    const includeSymbols = document.getElementById('includeSymbols');
+    const generateBtn = document.getElementById('generateBtn');
+
+    const lowercaseLetters = 'abcdefghijklmnopqrstuvwxyz';
+    const uppercaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const numbers = '0123456789';
+    const symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+    function generatePassword() {
+      let characters = lowercaseLetters;
+      if (includeUppercase.checked) characters += uppercaseLetters;
+      if (includeNumbers.checked) characters += numbers;
+      if (includeSymbols.checked) characters += symbols;
+
+      let password = '';
+      for (let i = 0; i < passwordLength.value; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        password += characters[randomIndex];
+      }
+
+      passwordDisplay.textContent = password;
+    }
+
+    passwordDisplay.addEventListener('click', () => {
+      navigator.clipboard.writeText(passwordDisplay.textContent).then(() => {
+        passwordDisplay.textContent = 'Copied to Clipboard!';
+        setTimeout(() => {
+          passwordDisplay.textContent = passwordDisplay.textContent;
+        }, 1500);
+      });
+    });
+    generateBtn.addEventListener('click', generatePassword);
+
+    
+    generatePassword();
+  </script>
+</body>
+</html>
